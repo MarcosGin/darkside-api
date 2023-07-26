@@ -6,7 +6,6 @@ const swapiClient = axios.create({
 })
 
 export const getFilms = async () => {
-  console.log('code')
   const res = await swapiClient.get<ApiResponse<Film>>('/films')
 
   return res.data
