@@ -1,21 +1,22 @@
-import express from 'express'
+import { config as dotEnvConfig } from "dotenv";
+dotEnvConfig();
+import bodyParser from "body-parser";
+import cors from "cors";
+import express from "express";
 
-import http from 'http'
-import bodyParser from 'body-parser'
-import cors from 'cors'
+import { config } from "./config";
+import router from "./router";
 
-import router from './router'
+function bootstrap() {
+  const app = express();
 
-const app = express()
+  app.use(cors());
+  app.use(bodyParser.urlencoded({ extended: true }));
+  app.use("/api", router());
 
-app.use(cors())
+  app.listen(config.port, () => {
+    console.log(`Server running at http://localhost:${config.port}`);
+  });
+}
 
-app.use(bodyParser.json())
-
-app.use('/', router())
-
-const server = http.createServer(app)
-
-server.listen(8080, () => {
-  console.log('Server running on http://localhost:8080')
-})
+bootstrap();
