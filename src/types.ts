@@ -12,6 +12,7 @@ export type Film = {
   director: string;
   producer: string;
   release_date: string;
+  planets: string[];
 };
 
 export type People = {

@@ -1,11 +1,5 @@
-import axios from "axios";
-
 import { Film, People, Planet, Starship } from "../../types";
-import { getAllFromResource } from "./helpers";
-
-const swapiClient = axios.create({
-  baseURL: "https://swapi.dev/api",
-});
+import { getAllFromResource, getOneFromResource } from "./helpers";
 
 export const getFilms = async () => {
   const res = await getAllFromResource<Film>("/films");
@@ -13,10 +7,10 @@ export const getFilms = async () => {
   return res;
 };
 
-export const getFilmById = async (id: string) => {
-  const res = await swapiClient.get<Film>(`/films/${id}`);
+export const getFilmById = async (id: string, populate?: string[]) => {
+  const res = await getOneFromResource<Film>(`/films/${id}`, populate);
 
-  return res.data;
+  return res;
 };
 
 export const getPeople = async () => {
@@ -25,10 +19,10 @@ export const getPeople = async () => {
   return res;
 };
 
-export const getPeopleById = async (id: string) => {
-  const res = await swapiClient.get<People>(`/people/${id}`);
+export const getPeopleById = async (id: string, populate?: string[]) => {
+  const res = await getOneFromResource<People>(`/people/${id}`, populate);
 
-  return res.data;
+  return res;
 };
 
 export const getPlanets = async () => {
@@ -37,10 +31,10 @@ export const getPlanets = async () => {
   return data;
 };
 
-export const getPlanetById = async (id: string) => {
-  const res = await swapiClient.get<Planet>(`/planets/${id}`);
+export const getPlanetById = async (id: string, populate?: string[]) => {
+  const res = await getOneFromResource<Planet>(`/planets/${id}`, populate);
 
-  return res.data;
+  return res;
 };
 
 export const getStarships = async () => {
@@ -49,8 +43,8 @@ export const getStarships = async () => {
   return data;
 };
 
-export const getStarshipById = async (id: string) => {
-  const res = await swapiClient.get<Starship>(`/starships/${id}`);
+export const getStarshipById = async (id: string, populate?: string[]) => {
+  const res = await getOneFromResource<Starship>(`/starships/${id}`, populate);
 
-  return res.data;
+  return res;
 };

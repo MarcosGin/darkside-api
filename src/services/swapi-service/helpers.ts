@@ -20,7 +20,7 @@ const transformResource = <T>(item: T) => {
   return item;
 };
 
-export const getResource = async <T>(url: string) => {
+export const getResource = async <T>(url: string): Promise<T> => {
   const key = `swapi-request-${url}`;
 
   console.log("Searching cache key for swapi: ", key);
@@ -42,6 +42,37 @@ export const getResource = async <T>(url: string) => {
   });
 
   return data;
+};
+
+export const getOneFromResource = async <T>(
+  url: string,
+  populate?: string[],
+) => {
+  const resource = await getResource<T>(url);
+
+  if (populate) {
+    const matches = Object.entries(resource)
+      .map(([key, values]) => (populate.includes(key) ? { key, values } : null))
+      .filter((matches) => matches)
+      .map(async ({ key, values }) => {
+        if (Array.isArray(values)) {
+          const items = await Promise.all(
+            values.map((item: string) => getResource(item)),
+          );
+
+          return { [key]: items.map((item) => transformResource(item)) };
+        }
+        const item = await getResource(values);
+
+        return { [key]: transformResource(item) };
+      });
+
+    const data = await Promise.all(matches);
+    const population = data.reduce((acc, item) => ({ ...acc, ...item }), {});
+    return { ...resource, ...population };
+  }
+
+  return resource;
 };
 
 export const getAllFromResource = async <T>(url: string) => {

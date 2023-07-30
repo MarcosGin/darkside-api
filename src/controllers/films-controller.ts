@@ -14,7 +14,11 @@ export const getAll = async (req: express.Request, res: express.Response) => {
 
 export const getById = async (req: express.Request, res: express.Response) => {
   try {
-    const films = await service.getFilmById(req.params.id);
+    const populate = req.query.populate as string;
+    const films = await service.getFilmById(
+      req.params.id,
+      populate?.split(","),
+    );
     return res.status(200).json(films);
   } catch (error) {
     console.log(error);
