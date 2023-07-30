@@ -48,7 +48,9 @@ export const getOneFromResource = async <T>(
   url: string,
   populate?: string[],
 ) => {
-  const resource = await getResource<T>(url);
+  const data = await getResource<T>(url);
+
+  const resource = transformResource(data);
 
   if (populate) {
     const matches = Object.entries(resource)
