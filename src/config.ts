@@ -3,5 +3,6 @@ export const config = {
   cache: true,
   cacheTime: 60 * 5,
   swapiCacheTime: 60 * 60 * 24, // 1day
+  defaultItemsPerPage: 10,
   redisUrl: process.env.REDIS_URL,
 };
