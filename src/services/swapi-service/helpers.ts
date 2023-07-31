@@ -22,14 +22,10 @@ const transformResource = <T>(item: T) => {
 
 export const getResource = async <T>(url: string): Promise<T> => {
   const key = `swapi-request-${url}`;
-
-  console.log("Searching cache key for swapi: ", key);
-
   const hit = await redisClient.get(key);
 
   if (hit) {
-    console.log("CACHE KEY founded", key);
-
+    console.log("Cache hit for key: ", key);
     return JSON.parse(hit);
   }
 

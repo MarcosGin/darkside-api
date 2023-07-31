@@ -20,6 +20,28 @@ export const getAll = async (req: express.Request, res: express.Response) => {
   }
 };
 
+export const getBookmark = async (
+  req: express.Request,
+  res: express.Response,
+) => {
+  try {
+    const ids = (req.query.ids as string)?.split(",").map((id) => parseInt(id));
+
+    const people = await service.getPeople(ids);
+
+    const limit = req.query.limit
+      ? parseInt(req.query.limit as string)
+      : undefined;
+    const page = parseInt((req.query.page as string) ?? "1");
+
+    const pagination = getPagination(people, { page, limit });
+    return res.status(200).json({ ...pagination });
+  } catch (error) {
+    console.log(error);
+    return res.sendStatus(400);
+  }
+};
+
 export const getById = async (req: express.Request, res: express.Response) => {
   try {
     const populate = req.query.populate as string;

@@ -13,8 +13,12 @@ export const getFilmById = async (id: string, populate?: string[]) => {
   return res;
 };
 
-export const getPeople = async () => {
+export const getPeople = async (ids?: number[]) => {
   const res = await getAllFromResource<People>("/people");
+
+  if (ids) {
+    return res.filter((person) => ids.includes(person.id));
+  }
 
   return res;
 };
